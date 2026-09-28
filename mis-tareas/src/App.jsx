@@ -136,3 +136,21 @@ export default function App() {
 
 
 //key: React necesita un key único en cada elemento de una lista para saber cuál es cuál cuando algo cambia. Usamos el id de la tarea.
+
+/*
+El return de App describe la apariencia para el estado actual: qué elementos hay, con qué texto y qué estilos.
+Los eventos y las funciones definen el comportamiento: qué pasa cuando el usuario hace algo.
+
+Lo que hace que se junten es que dentro del return se conectan los eventos con las funciones:
+
+jsx
+return (
+  <button onClick={clearDone}>Limpiar hechas</button>
+)
+
+Esa línea dice dos cosas:
+
+Apariencia: hay un botón con el texto "Limpiar hechas".
+Conexión: cuando alguien haga click, React va a llamar a clearDone.
+
+Pero clearDone está definida afuera del return. El return solo la enchufa al botón.*/

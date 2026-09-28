@@ -106,10 +106,6 @@ export default function App() {
       </ul>
     )}
 
-    <p className="text-sm text-gray-500">
-    {pendingCount} {pendingCount === 1 ? 'tarea pendiente' : 'tareas pendientes'}
-    </p>
-
 
     <div className="flex items-center justify-between">
     <p className="text-sm text-gray-500">
