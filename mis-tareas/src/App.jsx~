@@ -49,6 +49,24 @@ export default function App() {
 
   const pendingCount = tasks.filter((t) => !t.done).length
 
+  const clearDone = () => {
+    setTasks(tasks.filter((t) => !t.done))
+  }
+
+  // setTasks( ... )
+
+  // Recibe ese array nuevo y reemplaza el estado. React ve que cambió y redibuja la pantalla.
+/*
+  const clearDone = () => { ... }
+
+  Esto es una función flecha guardada en una variable. Es lo mismo que:
+
+  function clearDone() {
+    setTasks(tasks.filter((t) => !t.done))
+  }
+
+  Está envuelta en una función para que no se ejecute al instante, sino cuando la llames. Por eso en el botón va onClick={clearDone}, sin paréntesis: le pasás la función para que React la llame al hacer click.*/
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10">
     <div className="mx-auto max-w-md space-y-5">
@@ -91,6 +109,20 @@ export default function App() {
     <p className="text-sm text-gray-500">
     {pendingCount} {pendingCount === 1 ? 'tarea pendiente' : 'tareas pendientes'}
     </p>
+
+
+    <div className="flex items-center justify-between">
+    <p className="text-sm text-gray-500">
+    {pendingCount} {pendingCount === 1 ? 'tarea pendiente' : 'tareas pendientes'}
+    </p>
+    <button
+    onClick={clearDone}
+    className="text-sm text-red-500 hover:text-red-700"
+    >
+    Limpiar hechas
+    </button>
+    </div>
+
     </div>
     </div>
   )
