@@ -1,0 +1,140 @@
+# Mini proyecto: app de Tareas
+
+La aplicacion escribe tareas, las agrega a una lista. Se pueden tildar como hechas, borrar y fultrar, entre pendientes y hechas
+
+Al recargar la pagina, las tareas persisten
+
+Aplicacion chica, que usa cada herramienta al menos una vez.
+
+## Ideas centrales
+
+1. **La pantalla se divide en componentes:** un componente es una funcion que devuelve un pedazo de interfaz.
+
+La app va a tener tres componentes:
+
+- App (componente general)
+- TaskForm (formulario de tasks)
+- TaskItem (una tarea de la lista)
+
+2. **Los datos fluyen de padre a hijo (props):**
+`App` le pasa datos y `funciones` a sus hijos. Seria como llamar a una funcion con argumentos
+
+3. **La pantalla depende del estado:** El estado son los datos que la app recuerda. No se modifica a mano: se cambia el estado y React dibuja solo. Esta es la idea mas importamte de React
+
+
+## Cómo se reparten el trabajo las herramientas
+
+| Herramienta | Qué hace en este proyecto |
+|---|---|
+| Vite | Crea el proyecto, levanta el servidor y recarga al guardar |
+| React | Maneja componentes, props y estado |
+| JSX | Es la forma en que escribimos lo que se ve |
+| Tailwind | Le da el aspecto (colores, márgenes, bordes) |
+| CSS | Lo usamos solo para importar Tailwind, el resto es con clases |
+
+
+## El plan en pasos
+
+1. **Crear el proyecto** con Vite y dejar Tailwind funcionando
+2. **Mostrar algo en pantalla:** limpiar `App.jsx` y escribir un título
+3. **Estado:** una lista de tareas fija y mostrarla con `.map`
+4. **Formulario:** `TaskForm` para agregar tareas
+5. **Acciones:** marcar como hecha y borrar (`TaskItem`)
+6. **Filtros** y contador de pendientes
+7. **Persistencia** con `useEffect` y `localStorage`
+
+Cada paso agrega una sola idea nueva y podés ver el resultado en el navegador antes de seguir.
+
+## Antes de arrancar: qué necesitás
+
+Solo **Node.js** instalado. Para comprobarlo, en la terminal:
+
+```bash
+node -v
+npm -v
+```
+
+
+
+## Paso a paso
+
+
+Perfecto, Node 24 anda de sobra (Vite necesita 20 o superior). Arrancamos.
+
+# Paso 1: Crear el proyecto y dejar Tailwind funcionando
+
+## 1.1 Crear el proyecto con Vite
+
+En la terminal, dentro de la carpeta donde quieras guardar los proyectos:
+
+```bash
+npm create vite@latest mis-tareas -- --template react
+```
+
+```bash
+cd mis-tareas
+npm install
+```
+
+`npm install` descarga las librerías que el proyecto necesita (React, Vite, etc.) y las guarda en `node_modules`.
+
+## 1.2 Instalar Tailwind
+
+```bash
+npm install tailwindcss @tailwindcss/vite
+```
+
+Instala Tailwind y su plugin para Vite.
+
+## 1.3 Conectar Tailwind con Vite
+
+Dentro de `vite.config.js` :
+
+```js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
+```
+
+Se configura Vite, haaciendo que use el plugin de Tailwind, igual que ya usa el de React.
+
+## 1.4 Activar Tailwind en el CSS
+
+En `src/index.css`, se borra todo lo que tenga y se deja solo esta línea:
+
+```css
+@import "tailwindcss";
+```
+
+Esa línea le dice a Tailwind que genere las clases que se usan en el código.
+
+En `src/main.jsx` debe estar el import del CSS (viene por defecto):
+
+```jsx
+import './index.css'
+```
+
+## 1.5 Levantar el servidor
+
+```bash
+npm run dev
+```
+
+Mostrará una dirección, normalmente `http://localhost:5173`. 
+
+Se abre en el navegador y se verá la página de bienvenida de Vite y React, con los logos y un botón contador.
+
+## Al terminar, deberia tener:
+
+- El servidor corriendo sin errores en la terminal
+- La página abierta en el navegador
+- `vite.config.js` con los dos plugins
+- `index.css` con una sola línea
+
+Probá si Tailwind funciona: abrí `src/App.jsx`, y en cualquier etiqueta, por ejemplo el `<h1>`, agregale `className="text-3xl font-bold text-blue-600"`. Si al guardar el texto cambia de tamaño y color al instante, todo está bien conectado.
+
+Contame si te salió, o si apareció algún error, y pasamos al paso 2.

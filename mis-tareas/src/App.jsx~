@@ -4,28 +4,93 @@
 
 //la pantalla depende del estado
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import TaskForm from './components/TaskForm'
+import TaskItem from './components/TaskItem'
+
+const FILTERS = [
+  { key: 'all', label: 'Todas' },
+  { key: 'pending', label: 'Pendientes' },
+  { key: 'done', label: 'Hechas' },
+]
+
+//no cambia
+
 
 export default function App() {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: 'Aprender React', done: false },
-    { id: 2, text: 'Instalar Tailwind', done: true },
-    { id: 3, text: 'Armar mi primera app', done: false },
-    { id: 4, text: 'Subir el codigo a github'}
-  ])
+  const [tasks, setTasks] = useState(() => {
+    const saved = localStorage.getItem('tasks')
+    return saved ? JSON.parse(saved) : []
+  })
+
+  const [filter, setFilter] = useState('all')
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
+
+  const addTask = (text) => {
+    setTasks([...tasks, { id: Date.now(), text, done: false }])
+  }
+
+  const toggleTask = (id) => {
+    setTasks(tasks.map((t) => (t.id === id ? { ...t, done: !t.done } : t)))
+  }
+
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id))
+  }
+
+  const visible = tasks.filter((t) => {
+    if (filter === 'done') return t.done
+      if (filter === 'pending') return !t.done
+        return true
+  })
+
+  const pendingCount = tasks.filter((t) => !t.done).length
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10">
     <div className="mx-auto max-w-md space-y-5">
     <h1 className="text-3xl font-bold text-gray-900">Mis tareas</h1>
 
-    <ul className="space-y-2">
-    {tasks.map((task) => (
-      <li key={task.id} className="rounded-lg bg-white p-3 shadow-sm">
-      {task.text}
-      </li>
+    <TaskForm onAdd={addTask} />
+
+    <div className="flex gap-2">
+    {FILTERS.map((f) => (
+      <button
+      key={f.key}
+      onClick={() => setFilter(f.key)}
+      className={
+        'rounded-full px-3 py-1 text-sm ' +
+        (filter === f.key
+        ? 'bg-blue-600 text-white'
+        : 'bg-white text-gray-600 hover:bg-gray-200')
+      }
+      >
+      {f.label}
+      </button>
     ))}
-    </ul>
+    </div>
+
+    {visible.length === 0 ? (
+      <p className="text-center text-gray-500">No hay tareas para mostrar.</p>
+    ) : (
+      <ul className="space-y-2">
+      {visible.map((task) => (
+        <TaskItem
+        key={task.id}
+        task={task}
+        onToggle={toggleTask}
+        onDelete={deleteTask}
+        />
+      ))}
+      </ul>
+    )}
+
+    <p className="text-sm text-gray-500">
+    {pendingCount} {pendingCount === 1 ? 'tarea pendiente' : 'tareas pendientes'}
+    </p>
     </div>
     </div>
   )
